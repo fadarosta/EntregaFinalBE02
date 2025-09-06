@@ -1,7 +1,7 @@
 
 import { Router } from "express";
-import { productDBManager } from "../dao/productDBManager.js";
-import { cartDBManager } from "../dao/cartDBManager.js";
+import productDBManager from "../dao/productDBManager.js";
+import cartDBManager from "../dao/cartDBManager.js";
 import { CartRepository } from "../dao/repositories/cartRepository.js";
 import { CartService } from "../services/cartService.js";
 import { CartController } from "../controllers/cartController.js";

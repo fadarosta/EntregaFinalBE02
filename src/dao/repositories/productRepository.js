@@ -1,8 +1,6 @@
-import { productDBManager } from "../productDBManager.js";
-
 class ProductRepository {
-    constructor() {
-        this.dao = new productDBManager();
+    constructor(dao) {
+        this.dao = dao;
     }
 
     async getAll(params) {
@@ -26,4 +24,4 @@ class ProductRepository {
     }
 }
 
-export default new ProductRepository();
+export { ProductRepository };

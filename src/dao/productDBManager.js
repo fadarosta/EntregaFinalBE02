@@ -31,4 +31,4 @@ class productDBManager {
     }
 }
 
-export { productDBManager };
+export default productDBManager;

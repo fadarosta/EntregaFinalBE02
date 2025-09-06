@@ -70,6 +70,21 @@ class CartController {
             res.status(400).send({ status: "error", message: error.message });
         }
     };
+
+    checkout = async (req, res) => {
+        try {
+            const { cid } = req.params;
+            const purchaserEmail = req.user?.email || req.body.email; 
+            if (!purchaserEmail) {
+                return res.status(400).send({ status: "error", message: "Email del comprador requerido" });
+            }
+
+            const ticket = await this.cartService.checkout(cid, purchaserEmail);
+            res.send({ status: "success", payload: ticket });
+        } catch (error) {
+            res.status(400).send({ status: "error", message: error.message });
+        }
+    };
 }
 
 export { CartController };

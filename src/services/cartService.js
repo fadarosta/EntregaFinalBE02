@@ -41,6 +41,54 @@ class CartService {
     async clearCart(cid) {
         return await this.cartRepository.deleteAllProducts(cid);
     }
+
+    async checkout(cid, purchaserEmail) {
+        const cart = await this.cartRepository.getProductsFromCartByID(cid);
+        if (!cart) throw new Error("Carrito no encontrado");
+
+        const itemsPurchased = [];
+        const itemsNotProcessed = [];
+
+        for (let item of cart.products) {
+            const product = await this.productRepository.getProductByID(item.product);
+            if (!product) {
+                itemsNotProcessed.push({
+                    product: item.product,
+                    reason: "Producto no encontrado",
+                });
+                continue;
+            }
+
+            if (product.stock >= item.quantity) {
+                await this.productRepository.updateProduct(product._id, {
+                    stock: product.stock - item.quantity,
+                });
+
+                itemsPurchased.push({
+                    product: product._id,
+                    quantity: item.quantity,
+                });
+            } else {
+                itemsNotProcessed.push({
+                    product: product._id,
+                    reason: "Stock insuficiente",
+                });
+            }
+        }
+
+        if (itemsPurchased.length > 0) {
+            await this.cartRepository.removeProducts(cid, itemsPurchased.map(i => i.product));
+        }
+
+        const ticket = {
+            purchaser: purchaserEmail,
+            itemsPurchased,
+            itemsNotProcessed,
+            purchase_datetime: new Date(),
+        };
+
+        return ticket;
+    }
 }
 
 export { CartService };

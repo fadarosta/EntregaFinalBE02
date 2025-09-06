@@ -1,56 +1,58 @@
-import productService from "../services/productService.js";
-
 class ProductController {
-    async getAllProducts(req, res) {
+    constructor(productService) {
+        this.productService = productService;
+    }
+
+    getAllProducts = async (req, res) => {
         try {
-            const products = await productService.getAllProducts(req.query);
+            const products = await this.productService.getAllProducts(req.query);
             res.json({ status: "success", payload: products });
         } catch (error) {
             res.status(500).json({ status: "error", message: error.message });
         }
-    }
+    };
 
-    async getProductById(req, res) {
+    getProductById = async (req, res) => {
         try {
-            const product = await productService.getProductById(req.params.pid);
+            const product = await this.productService.getProductById(req.params.pid);
             res.json({ status: "success", payload: product });
         } catch (error) {
             res.status(400).json({ status: "error", message: error.message });
         }
-    }
+    };
 
-    async createProduct(req, res) {
+    createProduct = async (req, res) => {
         try {
             if (req.files) {
-                req.body.thumbnails = req.files.map((file) => file.path);
+                req.body.thumbnails = req.files.map(file => file.path);
             }
-            const newProduct = await productService.createProduct(req.body);
+            const newProduct = await this.productService.createProduct(req.body);
             res.status(201).json({ status: "success", payload: newProduct });
         } catch (error) {
             res.status(400).json({ status: "error", message: error.message });
         }
-    }
+    };
 
-    async updateProduct(req, res) {
+    updateProduct = async (req, res) => {
         try {
             if (req.files) {
-                req.body.thumbnails = req.files.map((file) => file.filename);
+                req.body.thumbnails = req.files.map(file => file.path);
             }
-            const updatedProduct = await productService.updateProduct(req.params.pid, req.body);
+            const updatedProduct = await this.productService.updateProduct(req.params.pid, req.body);
             res.json({ status: "success", payload: updatedProduct });
         } catch (error) {
             res.status(400).json({ status: "error", message: error.message });
         }
-    }
+    };
 
-    async deleteProduct(req, res) {
+    deleteProduct = async (req, res) => {
         try {
-            const result = await productService.deleteProduct(req.params.pid);
+            const result = await this.productService.deleteProduct(req.params.pid);
             res.json({ status: "success", payload: result });
         } catch (error) {
             res.status(400).json({ status: "error", message: error.message });
         }
-    }
+    };
 }
 
-export default new ProductController();
+export { ProductController };

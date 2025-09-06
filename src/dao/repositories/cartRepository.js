@@ -4,36 +4,36 @@ class CartRepository {
         this.dao = dao;
     }
 
-    getAllCarts() {
-        return this.dao.getAllCarts();
+    async getAllCarts() {
+        return await this.dao.getAllCarts();
     }
 
-    getProductsFromCartByID(cid) {
-        return this.dao.getProductsFromCartByID(cid);
+    async getProductsFromCartByID(cid) {
+        return await this.dao.getProductsFromCartByID(cid);
     }
 
-    createCart() {
-        return this.dao.createCart();
+    async createCart() {
+        return await this.dao.createCart();
     }
 
-    addProductByID(cid, pid) {
-        return this.dao.addProductByID(cid, pid);
+    async addProductByID(cid, pid) {
+        return await this.dao.addProductByID(cid, pid);
     }
 
-    deleteProductByID(cid, pid) {
-        return this.dao.deleteProductByID(cid, pid);
+    async deleteProductByID(cid, pid) {
+        return await this.dao.deleteProductByID(cid, pid);
     }
 
-    updateAllProducts(cid, products) {
-        return this.dao.updateAllProducts(cid, products);
+    async updateAllProducts(cid, products) {
+        return await this.dao.updateAllProducts(cid, products);
     }
 
-    updateProductByID(cid, pid, quantity) {
-        return this.dao.updateProductByID(cid, pid, quantity);
+    async updateProductByID(cid, pid, quantity) {
+        return await this.dao.updateProductByID(cid, pid, quantity);
     }
 
-    deleteAllProducts(cid) {
-        return this.dao.deleteAllProducts(cid);
+    async deleteAllProducts(cid) {
+        return await this.dao.deleteAllProducts(cid);
     }
 }
 
