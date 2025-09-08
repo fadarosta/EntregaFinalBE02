@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from 'express';
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
@@ -8,6 +11,7 @@ import productRouter from './routes/productRouter.js';
 import cartRouter from './routes/cartRouter.js';
 import viewsRouter from './routes/viewsRouter.js';
 import sessionsRouter from './routes/sessions.router.js';
+import mockProductRouter from './routes/mockProductRouter.js';
 
 import __dirname from './utils/constantsUtil.js';
 import websocket from './websocket.js';
@@ -33,11 +37,14 @@ app.use(express.static('public'));
 initializePassport();
 app.use(passport.initialize());
 
-// Routers
+// Routers existentes
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 app.use('/api/sessions', sessionsRouter);
 app.use('/', viewsRouter);
+
+// Router de productos hardcodeados
+app.use('/api/mock-products', mockProductRouter);
 
 // Server HTTP + Socket.io
 const PORT = 8080;

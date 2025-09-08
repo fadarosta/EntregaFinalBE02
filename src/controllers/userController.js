@@ -97,8 +97,8 @@ class UserController {
 
     resetPassword = async (req, res) => {
         try {
-            const { token, password } = req.body;
-            await UserService.resetPassword(token, password);
+            const { token, newPassword } = req.body;
+            await UserService.resetPassword(token, newPassword);
             res.json({ status: "success", message: "Contraseña restablecida correctamente" });
         } catch (error) {
             res.status(400).json({ status: "error", message: error.message });
