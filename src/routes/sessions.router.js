@@ -3,6 +3,7 @@ import passport from "passport";
 import initializePassport from "../config/passport.config.js";
 import UserController from "../controllers/userController.js";
 import userModel from "../dao/models/userModel.js";
+import { createHash } from "../utils/bcryptUtil.js";
 
 initializePassport();
 const router = Router();
@@ -31,9 +32,9 @@ router.post("/register", (req, res, next) => {
 // Registro admin
 router.post("/registerAdmin", async (req, res) => {
     try {
-        const { first_name, last_name, email, password } = req.body;
+        const { first_name, last_name, email, password, age } = req.body;
 
-        // Verificación
+        // Verificación de usuario existente
         const existingUser = await userModel.findOne({ email });
         if (existingUser) {
             return res
@@ -41,12 +42,13 @@ router.post("/registerAdmin", async (req, res) => {
                 .json({ status: "error", message: "El email ya está registrado" });
         }
 
-        // Creacion del admin
+        // admin con hash
         const newAdmin = new userModel({
             first_name,
             last_name,
             email,
-            password,
+            password: createHash(password),
+            age,
             role: "admin",
         });
 
